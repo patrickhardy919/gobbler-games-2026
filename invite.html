@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Join the Great Gobbler Games 2026</title>
+<style>
+  html,body{margin:0}
+  body{background:#4A2209;color:#FFF3DC;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;text-align:center;padding:24px 16px 40px;min-height:100vh;box-sizing:border-box}
+  h1{font-size:clamp(30px,6vw,56px);margin:0 0 4px;color:#FFC22E;text-shadow:0 3px 0 #C8321E}
+  p{font-size:clamp(18px,3vw,26px);margin:8px auto;max-width:640px}
+  #qr{display:inline-block;background:#fff;padding:18px;border-radius:22px;margin:18px 0;border:6px solid #F26B1D}
+  #qr img,#qr canvas{display:block}
+  .url{font-size:clamp(16px,2.6vw,22px);word-break:break-all;background:#6B3315;border-radius:14px;padding:12px 16px;display:inline-block;max-width:92%}
+  .steps{text-align:left;display:inline-block;font-size:clamp(17px,2.6vw,22px);line-height:1.5}
+  @media print{body{background:#fff;color:#2A1408}h1{color:#C8321E;text-shadow:none}.url{background:#eee}}
+</style></head>
+<body>
+<h1>The Great Gobbler Games 2026</h1>
+<p>Scan with your phone camera to join the family tournament!</p>
+<div id="qr"></div>
+<div><span class="url" id="u"></span></div>
+<p style="margin-top:22px"><b>Family code: GOBBLE26</b></p>
+<div class="steps">
+  <b>Put it on your home screen:</b><br>
+  iPhone (Safari): Share, then Add to Home Screen<br>
+  Android (Chrome): menu, then Install app
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script>
+  var base = location.href.split('#')[0].split('?')[0].replace(/invite\.html$/, '');
+  var link = base + '?code=GOBBLE26';
+  document.getElementById('u').textContent = base;
+  new QRCode(document.getElementById('qr'), {text: link, width: 280, height: 280, colorDark: '#2A1408', colorLight: '#ffffff'});
+</script>
+</body></html>
