@@ -831,7 +831,7 @@ let AC=null;
 function ac(){try{AC=AC||new (window.AudioContext||window.webkitAudioContext)();if(AC.state==='suspended')AC.resume();}catch(e){}return AC}
 /* Real recordings win: drop gobble.mp3 and/or bark.mp3 next to index.html and they are used instead of the synthesized sounds. */
 const REC={};
-function loadRec(n){try{fetch(n+'.mp3').then(r=>r.ok?r.arrayBuffer():null).then(b=>{const c=b&&ac();return c?c.decodeAudioData(b):null}).then(d=>{if(d)REC[n]=d}).catch(()=>{})}catch(e){}}
+async function loadRec(n){for(const ext of ['mp3','m4a','wav','ogg']){try{const r=await fetch(n+'.'+ext);if(!r.ok)continue;const b=await r.arrayBuffer(),c=ac();if(!c)return;REC[n]=await c.decodeAudioData(b);return}catch(e){}}}
 function playRec(n,vol,t0){const c=ac(),s=c.createBufferSource(),g=c.createGain();s.buffer=REC[n];g.gain.value=vol;s.connect(g);g.connect(c.destination);s.start(c.currentTime+(t0||0))}
 function noiseBuf(c,sec){const b=c.createBuffer(1,Math.ceil(c.sampleRate*sec),c.sampleRate),d=b.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=Math.random()*2-1;return b}
 /* One dachshund yap: sharp noisy attack, pitch pops up then falls, about a tenth of a second. p = pitch multiplier. */
