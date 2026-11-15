@@ -110,6 +110,7 @@ function setup() {
    Wednesday has no Pick the Winners; Thursday and Friday do. The engine loads these into the Games sheet
    the first time anything writes, so the host only has to tap "Release" each morning.
    Format of a trivia line:  Question | Correct answer | Wrong | Wrong | Wrong   (players see answers shuffled) */
+var GG_VERSION = 3;   /* bump when the games change: unplayed library games refresh from this file */
 var GG_GAMES = (function () {
   function Q(s) { return s.trim().split('\n').map(function (l) { var p = l.split('|').map(function (x) { return x.trim(); }); return { q: p[0], a: p.slice(1), c: 0 }; }); }
   function M(prefix, list) { return { matches: list.map(function (x, i) { return { id: prefix + (i + 1), a: x[0], b: x[1], w: '' }; }) }; }
@@ -123,18 +124,8 @@ var GG_GAMES = (function () {
       "The red flap of skin under a turkey's chin is called a what?|Wattle|Crest|Gill|Comb\n" +
       'Which spice gives pumpkin pie its signature flavor?|Cinnamon|Basil|Cumin|Paprika\n' +
       'Which dog breed is the star of this tournament?|Dachshund|Beagle|Poodle|Corgi') }),
-    G('lib-w2', 1, 'trivia', 'Turkey Day Trivia', '🦃', 'History, parades, and football.', { questions: Q(
-      'Which president officially made Thanksgiving a national holiday in 1863?|Abraham Lincoln|George Washington|Teddy Roosevelt|Thomas Jefferson\n' +
-      'What was the name of the ship that carried the Pilgrims to America in 1620?|Mayflower|Santa Maria|Nautilus|Endeavour\n' +
-      'Which department store holds a famous Thanksgiving Day parade with giant balloons?|Macy\'s|Sears|Nordstrom|Target\n' +
-      'The Pilgrims and the Wampanoag shared their famous harvest feast in which year?|1621|1492|1776|1700\n' +
-      'Which two cities host the traditional NFL Thanksgiving games every year?|Detroit and Dallas|Chicago and Green Bay|New York and Miami|Denver and Seattle') }),
-    G('lib-w3', 1, 'trivia', 'Pie & Plate', '🥧', 'Name that side dish.', { questions: Q(
-      'Which pie is the most popular at Thanksgiving tables?|Pumpkin|Cherry|Lemon meringue|Key lime\n' +
-      'Cranberries grow on what?|Low vines in bogs|Tall trees|Underground like potatoes|Cactus plants\n' +
-      'Green bean casserole is topped with crispy what?|Fried onions|Bacon bits|Croutons|Peanuts\n' +
-      'What fluffy white candy tops many sweet potato casseroles?|Marshmallows|Cotton candy|Meringue|Whipped butter\n' +
-      'Which pantry staple is most often used to thicken gravy?|Flour|Sugar|Baking soda|Salt') }),
+    G('lib-w2', 1, 'trivia', 'Turkey Day Trivia', '🦃', 'History, parades, and football.', { questions: Q("Which ship carried the Pilgrims to America in 1620?|Mayflower|Santa Maria|Nautilus|Endeavour\nWhich department store holds a famous Thanksgiving Day parade with giant balloons?|Macy's|Sears|Nordstrom|Target\nWhich president officially made Thanksgiving a national holiday in 1863?|Abraham Lincoln|George Washington|Teddy Roosevelt|Thomas Jefferson\nThe Pilgrims and the Wampanoag shared their famous harvest feast in which year?|1621|1492|1776|1700\nWhich president moved Thanksgiving up a week in 1939, creating what critics called \"Franksgiving\"?|Franklin D. Roosevelt|Herbert Hoover|Calvin Coolidge|Harry Truman") }),
+    G('lib-w3', 1, 'trivia', 'Pie & Plate', '🥧', 'Name that side dish.', { questions: Q("Which pie is the most popular at Thanksgiving tables?|Pumpkin|Cherry|Lemon meringue|Key lime\nGreen bean casserole is topped with crispy what?|Fried onions|Bacon bits|Croutons|Peanuts\nCranberries grow on what?|Low vines in bogs|Tall trees|Underground like potatoes|Cactus plants\nAt what internal temperature is a turkey considered safe to eat, according to the USDA?|165°F|145°F|180°F|150°F\nWhich spice is NOT in a typical pumpkin pie spice blend?|Cumin|Nutmeg|Ginger|Cloves") }),
     G('lib-w4', 1, 'twenty', '20 Questions', '🕵️', 'Find the mystery dish before the clock runs out.', {
       secret: 'Pumpkin Pie', seconds: 150,
       choices: ['Pumpkin Pie', 'Apple Pie', 'Pecan Pie', 'Sweet Potato Casserole', 'Cranberry Sauce', 'Mashed Potatoes', 'Green Bean Casserole', 'Cornbread Stuffing'],
@@ -147,21 +138,11 @@ var GG_GAMES = (function () {
     G('lib-t1', 2, 'vote', 'Most Likely To', '🙋', 'Shared screen. Vote for the family member who fits.', { prompts: [
       'Most likely to nap before pie', 'Most likely to burn the rolls', 'Most likely to win game night', 'Most likely to take seconds on dessert',
       'Most likely to talk during the football game', 'Most likely to start the leftovers sandwich first'] }),
-    G('lib-t2', 2, 'trivia', 'Fun Facts & Pop Culture', '📺', 'Movies, cartoons, and more.', { questions: Q(
-      "In the 1987 comedy 'Planes, Trains and Automobiles,' Steve Martin is trying to get home for which holiday?|Thanksgiving|Christmas|Easter|Fourth of July\n" +
-      'On Friends, Joey famously puts what on his head at Thanksgiving?|A turkey|A pie|A pumpkin|A pot\n' +
-      'In the Peanuts Thanksgiving special, Snoopy serves toast, popcorn, pretzel sticks and what candy?|Jelly beans|Gumdrops|Candy corn|Licorice\n' +
-      'Which bird did Benjamin Franklin reportedly wish was the national bird instead of the bald eagle?|The turkey|The owl|The robin|The goose\n' +
-      'In which state is Plymouth Rock?|Massachusetts|Virginia|Maine|New York') }),
-    G('lib-t3', 2, 'trivia', 'Football & Parade', '🏈', 'Touchdowns and giant balloons.', { questions: Q(
-      'Which NFL team hosts a Thanksgiving Day game in Detroit every year?|Lions|Bears|Packers|Vikings\n' +
-      "Which classic cartoon cat was among the first giant balloons in the Macy's parade, in 1927?|Felix the Cat|Tom|Garfield|Sylvester\n" +
-      'Which team has hosted a Thanksgiving Day game almost every year since 1966?|Dallas Cowboys|New York Giants|Miami Dolphins|Denver Broncos\n' +
-      'How many points is a touchdown worth before the extra point?|6|7|3|5\n' +
-      'What is the Super Bowl trophy called?|Vince Lombardi Trophy|Heisman Trophy|Stanley Cup|Commissioner\'s Cup') }),
+    G('lib-t2', 2, 'trivia', 'Fun Facts & Pop Culture', '📺', 'Movies, cartoons, and more.', { questions: Q("On Friends, Joey famously puts what on his head at Thanksgiving?|A turkey|A pie|A pumpkin|A pot\nIn which state is Plymouth Rock?|Massachusetts|Virginia|Maine|New York\nWhich bird did Benjamin Franklin reportedly wish was the national bird instead of the bald eagle?|The turkey|The owl|The robin|The goose\nIn the Peanuts Thanksgiving special, Snoopy serves toast, popcorn, pretzel sticks and what candy?|Jelly beans|Gumdrops|Candy corn|Licorice\nIn the famous WKRP in Cincinnati Thanksgiving episode, what does the station drop from a helicopter?|Live turkeys|Pies|Dollar bills|Candy") }),
+    G('lib-t3', 2, 'trivia', 'Football & Parade', '🏈', 'Touchdowns and giant balloons.', { questions: Q("Which NFL team hosts a Thanksgiving Day game in Detroit every year?|Lions|Bears|Packers|Vikings\nWhich team has hosted a Thanksgiving Day game almost every year since 1966?|Dallas Cowboys|New York Giants|Miami Dolphins|Denver Broncos\nHow many points is a touchdown worth before the extra point?|6|7|3|5\nWhich cartoon character was a giant balloon in the Macy's parade in 1927?|Felix the Cat|Mickey Mouse|Popeye|Betty Boop\nWhich legendary broadcaster is famous for handing out a Turkey Leg award on Thanksgiving?|John Madden|Howard Cosell|Al Michaels|Pat Summerall") }),
     G('lib-t4', 2, 'warm', 'Word Warm-Up', '🔥', 'Guess the secret word. Hot guesses are close.', {
-      secret: 'turkey', seconds: 150,
-      words: 'bird gobble chicken thanksgiving feast dinner roast stuffing gravy drumstick feathers wattle poultry duck goose oven carve leftovers wing meat cranberry pilgrim november holiday family table plate potatoes pie harvest farm barn egg nest fly wild hunt tom brine fryer sandwich soup bacon ham beef pork fish salad bread corn autumn fall'.split(' ') }),
+      secret: 'cornucopia', seconds: 150,
+      words: 'horn plenty abundance bounty harvest basket wicker overflowing fruit vegetables gourd squash pumpkin corn grapes apples centerpiece table decoration symbol feast thanksgiving autumn fall greek myth goat bountiful full spill produce crops farm orchard garden grain wheat nuts berries pears cranberry display holiday celebration thankful gratitude blessing family dinner meal food'.split(' ') }),
     G('lib-t5', 2, 'picks', 'Pick the Winners: Thursday', '🏆', 'Thanksgiving Day football and college hoops. Pick all seven!', M('t', [
       ['Bears', 'Lions'], ['Eagles', 'Cowboys'], ['Bills', 'Chiefs'], ['TCU', 'Texas Tech'],
       ['Michigan State', 'Arkansas'], ['Texas', 'Georgetown'], ['UCLA', "Saint Mary's"]])),
@@ -173,18 +154,8 @@ var GG_GAMES = (function () {
       'In Canada, Thanksgiving is celebrated in which month?|October|November|December|September\n' +
       'How many points is a field goal worth?|3|2|6|1\n' +
       'After dinner, two people pull on the wishbone. What do they do?|Make a wish|Count to ten|Sing a song|Bury it') }),
-    G('lib-f2', 3, 'trivia', 'Leftovers & Black Friday', '🥪', 'The day after the feast.', { questions: Q(
-      'Black Friday falls on the day after Thanksgiving. What day of the week is it?|Friday|Saturday|Monday|Thursday\n' +
-      'Which compound in turkey gets the blame for making people sleepy?|Tryptophan|Caffeine|Sodium|Gluten\n' +
-      'About how many days are leftovers safe in the fridge, according to food safety guidance?|3 to 4 days|10 days|2 weeks|1 hour\n' +
-      'On Friends, what does Ross call his Thanksgiving leftover sandwich?|The Moist Maker|The Big Gobbler|The Turkey Tower|The Day After\n' +
-      'What do many people make from a leftover turkey carcass?|Soup stock|Cranberry sauce|Pumpkin pie|Dinner rolls') }),
-    G('lib-f3', 3, 'trivia', 'Wiener Dog Trivia', '🌭', 'Everything about our favorite long dogs.', { questions: Q(
-      'What nickname do people give dachshunds?|Wiener dog|Mop dog|Torpedo dog|Rope dog\n' +
-      'A dachshund named Waldi was the mascot of which Olympic Games?|1972 Munich|1996 Atlanta|1984 Los Angeles|2000 Sydney\n' +
-      'Dachshunds were originally bred to hunt which animal?|Badgers|Penguins|Lions|Moose\n' +
-      'How many coat types do dachshunds come in?|3|2|5|7\n' +
-      'The Oscar Mayer Wienermobile is shaped like a giant what?|Hot dog|Pickle|Dachshund|Corn dog') }),
+    G('lib-f2', 3, 'trivia', 'Leftovers & Black Friday', '🥪', 'The day after the feast.', { questions: Q("Black Friday falls on the day after Thanksgiving. What day of the week is it?|Friday|Saturday|Monday|Thursday\nWhich compound in turkey gets the blame for making people sleepy?|Tryptophan|Caffeine|Sodium|Gluten\nAbout how many days are leftovers safe in the fridge, according to food safety guidance?|3 to 4 days|10 days|2 weeks|1 hour\nOn Friends, what is the extra gravy-soaked slice of bread in Ross's leftover sandwich called?|The Moist Maker|The Gravy Boat|The Soggy Middle|The Turkey Tower\nThe term 'Black Friday' was first used in the 1960s by whom to describe the chaos of the shopping crowds?|Philadelphia police|New York stockbrokers|Department store accountants|Mall Santas") }),
+    G('lib-f3', 3, 'trivia', 'Wiener Dog Trivia', '🌭', 'Everything about our favorite long dogs.', { questions: Q("What nickname do people give dachshunds?|Wiener dog|Mop dog|Torpedo dog|Rope dog\nThe Oscar Mayer Wienermobile is shaped like a giant what?|Hot dog|Pickle|Dachshund|Corn dog\nDachshunds were originally bred to hunt which animal?|Badgers|Penguins|Lions|Moose\nA dachshund named Waldi was the mascot of which Olympic Games?|1972 Munich|1996 Atlanta|1984 Los Angeles|2000 Sydney\nWhich of these is NOT a dachshund coat type?|Curly|Wirehaired|Longhaired|Smooth") }),
     G('lib-f4', 3, 'twenty', '20 Questions: Side Dish', '🕵️', 'Find the mystery side dish before the clock runs out.', {
       secret: 'Stuffing', seconds: 150,
       choices: ['Stuffing', 'Mashed Potatoes', 'Cranberry Sauce', 'Dinner Rolls', 'Gravy', 'Green Bean Casserole', 'Pumpkin Pie', 'Apple Pie'],
@@ -502,7 +473,7 @@ function createEngine(db, opt) {
       var n = db.read('games').filter(function (g) { return Number(g.day) === d + 1; }).length;
       sys('Day ' + (d + 1) + ' is live! ' + n + ' new game' + (n === 1 ? '' : 's') + ' just dropped. 🏆'); return { ok: true, day: d + 1 };
     },
-    hRestoreGames: function () { var n = loadLibrary(true); return { ok: true, added: n }; },
+    hRestoreGames: function () { var n = loadLibrary(true); return { ok: true, added: n }; },   /* adds missing games and refreshes unplayed ones */
     hSetCode: function (r) { var c = clean(r.code, 20).toUpperCase(); if (!c) return err('Enter a code.'); setSetting('code', c); return { ok: true }; },
     hAddGame: function (r) {
       var g = r.game || {}, cfg = buildCfg(g.type, g.cfg); if (typeof cfg === 'string') return err(cfg);
@@ -545,6 +516,7 @@ function createEngine(db, opt) {
       db.save('ledger', db.read('ledger').filter(function (l) { return l.pid !== r.pid; }));
       db.save('plays', db.read('plays').filter(function (l) { return l.pid !== r.pid; })); return { ok: true };
     },
+    hClearPlayers: function () { db.save('players', []); db.save('ledger', []); db.save('plays', []); setSetting('live', null); return { ok: true }; },
     hChatDel: function (r) { db.save('chat', db.read('chat').filter(function (c) { return c.id !== r.id; })); return { ok: true }; },
     hReset: function () {
       db.save('ledger', []); db.save('plays', []); db.save('chat', []); setSetting('live', null);
@@ -587,16 +559,28 @@ function createEngine(db, opt) {
   };
 
   /* The 15 preloaded games (library.js). Loaded once, the first time anything is written. */
-  function loadLibrary(force) {
-    var have = {}, added = 0;
-    db.read('games').forEach(function (g) { have[g.id] = 1; });
+  /* Adds any missing library game. With refresh=true, also updates library games nobody has played yet
+     (never Pick the Winners, so your matchup edits and results are safe). */
+  function loadLibrary(refresh) {
+    var rows = db.read('games'), have = {}, added = 0, changed = 0, played = {};
+    if (refresh) db.read('plays').forEach(function (p) { played[p.gid] = 1; });
+    rows.forEach(function (r) { have[r.id] = r; });
+    GG_GAMES.forEach(function (g) {
+      var r = have[g.id];
+      if (!r || !refresh || g.type === 'picks' || played[g.id]) return;
+      r.day = g.day; r.type = g.type; r.title = g.title; r.emoji = g.emoji; r.blurb = g.blurb; r.cfg = JSON.parse(JSON.stringify(g.cfg)); changed++;
+    });
+    if (changed) db.save('games', rows);
     GG_GAMES.forEach(function (g) {
       if (have[g.id]) return;
       db.add('games', { id: g.id, day: g.day, type: g.type, title: g.title, emoji: g.emoji, blurb: g.blurb, cfg: JSON.parse(JSON.stringify(g.cfg)) }); added++;
     });
-    setSetting('seeded', 1); return added;
+    setSetting('seeded', 1); setSetting('libver', GG_VERSION); return added + changed;
   }
-  function ensureSeed() { if (!setting('seeded', 0)) loadLibrary(); }
+  function ensureSeed() {
+    if (!setting('seeded', 0)) loadLibrary(false);
+    else if (Number(setting('libver', 0)) < GG_VERSION) loadLibrary(true);
+  }
   var READ_ONLY = { sync: 1, state: 1, tv: 1, picks: 1 };
 
   function handle(req) {
